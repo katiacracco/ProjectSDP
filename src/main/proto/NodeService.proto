@@ -1,0 +1,120 @@
+syntax = "proto3";
+package com.grpc;
+
+message HelloRequest {
+  int32 id = 1;
+  int32 port = 2;
+
+  message Position {
+    int32 x = 1;
+    int32 y = 2;
+  }
+  Position pos = 3;
+}
+
+message HelloResponse {
+  int32 master = 1;
+
+  message Next {
+    int32 id = 1;
+    int32 port = 2;
+  }
+  Next next = 2;
+}
+
+message DeliveryRequest {
+  int32 idOrder = 1;
+  int32 idDrone = 2;
+
+  message Position {
+    int32 x = 1;
+    int32 y = 2;
+  }
+  Position pickUp = 3;
+  Position del = 4;
+}
+
+message DeliveryResponse {
+  float battery = 1;
+}
+
+message ElectionRequest {
+  string el = 1;
+  int32 id = 2;
+  float bat = 3;
+
+  message Pos {
+    int32 id = 1;
+    float pow = 2;
+
+    message Position {
+      int32 x = 1;
+      int32 y = 2;
+    }
+    Position pos = 3;
+  }
+
+  repeated Pos p = 4;
+}
+
+message ElectionResponse {
+}
+
+message StatsRequest {
+  int64 ts = 1;
+  int32 id = 2;
+
+  message Position {
+    int32 x = 1;
+    int32 y = 2;
+  }
+  Position pos = 3;
+
+  float km = 4;
+  repeated float avg = 5;
+  float pow = 6;
+}
+
+message StatsResponse {
+}
+
+message PingRequest {
+  string s = 1;
+}
+
+message PingResponse {
+}
+
+message RechargeRequest {
+  string r = 1;
+  int32 id = 2;
+  int64 ts = 3;
+}
+
+message RechargeResponse {
+  string m = 1;
+}
+
+message UpdateRequest {
+  int32 id = 1;
+  message Position {
+    int32 x = 1;
+    int32 y = 2;
+  }
+  Position pos = 2;
+  int32 pow = 3;
+}
+
+message UpdateResponse {
+}
+
+
+service NodeService {
+  rpc presentation(HelloRequest) returns (HelloResponse);
+  rpc delivering(DeliveryRequest) returns (DeliveryResponse);
+  rpc election(ElectionRequest) returns (ElectionResponse);
+  rpc sending(StatsRequest) returns (StatsResponse);
+  rpc ping(PingRequest) returns (PingResponse);
+  rpc recharging(RechargeRequest) returns (RechargeResponse);
+  rpc updating(UpdateRequest) returns (UpdateResponse);
+}
